@@ -18,26 +18,25 @@ def sort_and_count_inversions(array, array_len):
         a1_inv_count, a1_sorted_list = sort_and_count_inversions(a1, array_len/2)
         a2_inv_count, a2_sorted_list = sort_and_count_inversions(a2, array_len/2)
 
-        split_invs_count, a_sorted = merge_sort_inv_count(a1_sorted_list, a2_sorted_list, array_len)
+        split_invs_count, a_sorted = merge_sort_inv_count(a1_sorted_list, a2_sorted_list)
 
-        count_of_inversions = a1_inv_count + a2_inv_count + split_invs_count
+        count_of_inversions = split_invs_count
 
         return count_of_inversions, a_sorted
 
 
-def merge_sort_inv_count(a1, a2, len_a):
-    len_final_list = len(a1)
+def merge_sort_inv_count(a1, a2):   
     i = 0
     j = 0
-    global inversions_count 
+    global inversions_count
     output_array = []
-    print a1," ",a2
-
+    
     while (i < len(a1) and j < len(a2)):
         if a1[i] < a2[j]:
             output_array.append(a1[i])
             i += 1
 
+            #add remainder of a2 to the list, if a1 is exhausted
             if i == len(a1) and j != len(a2):
                 while (j != len(a2)):
                     output_array.append(a2[j])
@@ -45,13 +44,15 @@ def merge_sort_inv_count(a1, a2, len_a):
 
         elif a1[i] > a2[j]:
             output_array.append(a2[j])
-            inversions_count = inversions_count + len(a1[i:])
+            inversions_count += (len(a1)-i)
             j += 1
 
+            #add remainder of a1 to the list, if a2 is exhausted
             if i < len(a1) and j == len(a2):
-                while j != len(a1):
+                while i != len(a1):
                     output_array.append(a1[i])
                     i += 1
+        print inversions_count
 
     return inversions_count, output_array
 
@@ -61,8 +62,7 @@ def split_list(list_to_split, len_a):
     return a1, a2
 
 def main():
-    array_to_count = [1, 3, 5, 2, 4, 6]
-    array_to_count = [1, 2, 3, 4, 6, 5]
+    array_to_count = [10, 8, 9, 7, 3, 4, 6, 5]
     
     array_len = len(array_to_count)
 
