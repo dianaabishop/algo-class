@@ -8,15 +8,12 @@ Because of the large size of this array, you should implement the fast divide-an
 inversions_count = 0
 
 def sort_and_count_inversions(array, array_len):
-    if array_len < 2:
-        count_of_inversions = 0 
-        sorted_array = array
-        return count_of_inversions, sorted_array
-    else:
+    if array_len > 1:
         a1, a2 = split_list(array, array_len)
+        print a1, a2
 
-        a1_inv_count, a1_sorted_list = sort_and_count_inversions(a1, array_len/2)
-        a2_inv_count, a2_sorted_list = sort_and_count_inversions(a2, array_len/2)
+        a1_inv_count, a1_sorted_list = sort_and_count_inversions(a1, len(a1))
+        a2_inv_count, a2_sorted_list = sort_and_count_inversions(a2, len(a2))
 
         split_invs_count, a_sorted = merge_sort_inv_count(a1_sorted_list, a2_sorted_list)
 
@@ -24,21 +21,26 @@ def sort_and_count_inversions(array, array_len):
 
         return count_of_inversions, a_sorted
 
+    else:
+        count_of_inversions = 0 
+        sorted_array = array
+        return count_of_inversions, sorted_array
+
 
 def merge_sort_inv_count(a1, a2):   
     i = 0
     j = 0
     global inversions_count
     output_array = []
-    
+
     while (i < len(a1) and j < len(a2)):
         if a1[i] < a2[j]:
             output_array.append(a1[i])
             i += 1
 
             #add remainder of a2 to the list, if a1 is exhausted
-            if i == len(a1) and j != len(a2):
-                while (j != len(a2)):
+            if i == len(a1) and j < len(a2):
+                while (j < len(a2)):
                     output_array.append(a2[j])
                     j += 1
 
@@ -49,10 +51,9 @@ def merge_sort_inv_count(a1, a2):
 
             #add remainder of a1 to the list, if a2 is exhausted
             if i < len(a1) and j == len(a2):
-                while i != len(a1):
+                while (i < len(a1)):
                     output_array.append(a1[i])
                     i += 1
-        print inversions_count
 
     return inversions_count, output_array
 
@@ -62,7 +63,8 @@ def split_list(list_to_split, len_a):
     return a1, a2
 
 def main():
-    array_to_count = [10, 8, 9, 7, 3, 4, 6, 5]
+    #breaking up into uneven chunks messes it up
+    array_to_count = [7, 6, 1, 5, 2, 10, 8, 3, 9, 4, 12, 11]
     
     array_len = len(array_to_count)
 
