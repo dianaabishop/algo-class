@@ -63,12 +63,16 @@ def split_list(list_to_split, len_a):
     return a1, a2
 
 def main():
-    #breaking up into uneven chunks messes it up
-    array_to_count = [7, 6, 1, 5, 2, 10, 8, 3, 9, 4, 12, 11]
-    
+
+    # array_to_count = [10, 11, 13, 4, 1, 3, 7, 9, 8, 6, 14, 16]
+
+    text_file = open('array.txt', 'rb')
+    array_to_count = text_file.read().split('\n')
+    array = [int(x) for x in array_to_count]
+
     array_len = len(array_to_count)
 
-    final_inversions_count, sorted_array = sort_and_count_inversions(array_to_count, array_len)
+    final_inversions_count, sorted_array = sort_and_count_inversions(array, array_len)
     print sorted_array
     print final_inversions_count
 
